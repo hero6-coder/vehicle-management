@@ -1,6 +1,7 @@
 package blueship.vehicle.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,12 +22,17 @@ public class Vehicle implements Serializable {
 	@Column(name = "vehicle_id")
 	private Integer id;
 
-	@Column(name = "engine_number")
+	@Column(name = "engine_number", unique = true)
 	private String engineNumber;
 
-	@Column(name = "user_id")
-	private Integer userId;
+//	@Column(name = "user_id")
+//	private Integer userId;
 
 	@Column(name = "registration_date")
+	@CreationTimestamp
 	private LocalDate registrationDate;
+
+	@ManyToOne
+	@JoinColumn(name="user_id", nullable=false)
+	private User user;
 }

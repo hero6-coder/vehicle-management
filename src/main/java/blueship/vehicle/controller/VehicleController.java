@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/users")
-@Api(value = "users", description = "")
-public class UserController {
+@RequestMapping("/v1/vehicles")
+@Api(value = "vehicles", description = "")
+public class VehicleController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     UserService userService;

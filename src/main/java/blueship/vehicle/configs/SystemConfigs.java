@@ -26,8 +26,8 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -178,8 +178,8 @@ public class SystemConfigs {
 		return conversionService;
 	}
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(11);
-	}
+//	@Bean
+//	public PasswordEncoder encoder() {
+//		return new BCryptPasswordEncoder(11);
+//	}
 }

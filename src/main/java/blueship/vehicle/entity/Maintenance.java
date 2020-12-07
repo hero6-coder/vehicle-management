@@ -1,6 +1,7 @@
 package blueship.vehicle.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class Maintenance implements Serializable {
 	private Float price;
 
 	@Column(name = "booking_date")
+	@CreationTimestamp
 	private LocalDate bookingDate;
 
 	@Column(name = "note")
