@@ -1,7 +1,7 @@
 package blueship.vehicle.controller;
 
-import blueship.vehicle.dto.VehicleDto;
-import blueship.vehicle.service.VehicleService;
+import blueship.vehicle.dto.MaintenanceDto;
+import blueship.vehicle.service.MaintemanceService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,24 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/vehicles")
-@Api(value = "vehicles", description = "")
-public class VehicleController {
+@RequestMapping("/v1/maintenances")
+@Api(value = "maintenances", description = "")
+public class MaintenanceController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    VehicleService vehicleService;
+    MaintemanceService maintemanceService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public List<VehicleDto> getVehicles() {
-        logger.info("VehicleController#getVehicles");
-        return vehicleService.getAllVehicles();
+    public List<MaintenanceDto> getVehicles() {
+        logger.info("MaintenanceController#getMaintenances");
+        return maintemanceService.getAllMaintenances();
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public VehicleDto createVehicle(@RequestBody @Validated VehicleDto vehicleDto) {
-        logger.info("VehicleController#createVehicle --- vehicle: {}", vehicleDto.toString());
-        return vehicleService.saveVehicle(vehicleDto);
+    public MaintenanceDto createMaintenance(@RequestBody @Validated MaintenanceDto maintenanceDto) {
+        logger.info("MaintenanceController#createMaintenance --- maintenance: {}", maintenanceDto.toString());
+        return maintemanceService.saveMaintenance(maintenanceDto);
     }
 }

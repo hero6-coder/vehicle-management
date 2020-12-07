@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -21,10 +22,13 @@ public class MaintenanceDto implements Serializable {
 
     private Integer id;
 
+    @NotNull
     private Integer vehicleId;
 
+    @NotNull
     private Float price;
 
+    @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate bookingDate;

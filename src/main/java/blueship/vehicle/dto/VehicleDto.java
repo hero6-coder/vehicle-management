@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -22,8 +23,10 @@ public class VehicleDto implements Serializable {
 
     private Integer id;
 
+    @NotNull
     private String engineNumber;
 
+    @NotNull
     private Integer userId;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)

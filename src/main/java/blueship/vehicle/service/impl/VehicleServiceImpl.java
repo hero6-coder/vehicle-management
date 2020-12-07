@@ -24,24 +24,6 @@ public class VehicleServiceImpl implements VehicleService {
     VehicleRepository vehicleRepository;
     @Autowired
     UserRepository userRepository;
-//
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
-
-//    @Override
-//    public List<UserDto> getActiveUser() {
-//        List<User> users = vehicleRepository.findAllByStatus(1);
-//        List<UserDto> rtv = new ArrayList<>();
-//        if (users != null) {
-//            users.stream().forEach(user -> {
-//                UserDto userDto = new UserDto();
-//                BeanUtils.copyProperties(user, userDto);
-//                rtv.add(userDto);
-//            });
-//        }
-//        logger.info("UserServiceImpl#getActiveUser --- return data size:{}", rtv.size());
-//        return rtv;
-//    }
 
     @Override
     public List<VehicleDto> getVehiclesByUser(Integer userId) {
