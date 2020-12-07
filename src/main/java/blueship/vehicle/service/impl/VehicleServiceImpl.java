@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,5 +52,20 @@ public class VehicleServiceImpl implements VehicleService {
         BeanUtils.copyProperties(vehicle, vehicleDto);
         logger.info("VehicleServiceImpl#saveVehicle --- After save: VehicleDto: {}", vehicleDto);
         return vehicleDto;
+    }
+
+    @Override
+    public List<VehicleDto> getAllVehicles() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        List<VehicleDto> rtv = new ArrayList<>();
+        if (vehicles != null) {
+            vehicles.stream().forEach(vehicle -> {
+                VehicleDto vehicleDto = new VehicleDto();
+                BeanUtils.copyProperties(vehicle, vehicleDto);
+                rtv.add(vehicleDto);
+            });
+        }
+        logger.info("VehicleServiceImpl#getAllVehicles --- return data size:{}", rtv.size());
+        return rtv;
     }
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistent class for the Users database table.
@@ -38,5 +39,5 @@ public class User implements Serializable {
 
 //	@OneToMany(targetEntity = Vehicle.class)
 	@OneToMany(mappedBy="user")
-	private List<Vehicle> vehicles;
+	private Set<Vehicle> vehicles;
 }
