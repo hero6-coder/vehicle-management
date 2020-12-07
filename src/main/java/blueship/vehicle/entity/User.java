@@ -37,7 +37,6 @@ public class User implements Serializable {
 	@CreationTimestamp
 	private LocalDate createdDate;
 
-//	@OneToMany(targetEntity = Vehicle.class)
 	@OneToMany(mappedBy="user")
 	private Set<Vehicle> vehicles;
 }

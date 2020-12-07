@@ -23,9 +23,6 @@ public class Maintenance implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "vehicle_id")
-	private Integer vehicleId;
-
 	@Column(name = "price")
 	private Float price;
 
@@ -35,4 +32,8 @@ public class Maintenance implements Serializable {
 
 	@Column(name = "note")
 	private String note;
+
+	@ManyToOne
+	@JoinColumn(name="vehicle_id", nullable=false)
+	private Vehicle vehicle;
 }

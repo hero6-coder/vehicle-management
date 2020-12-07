@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
-//    List<Vehicle> findAllByActive(boolean active);
-//    List<Vehicle> getVehiclesByActiveAndHolidayDateAfter(boolean active, LocalDate date);
   Optional<Vehicle> findAllByEngineNumber(String engineNumber);
   List<Vehicle> findAllByUser(User user);
 }
