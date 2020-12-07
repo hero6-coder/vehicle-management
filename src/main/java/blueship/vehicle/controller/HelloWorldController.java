@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloWorldController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_UTF8_VALUE })
+            MediaType.APPLICATION_JSON_VALUE })
     public String sayHello() {
         return "Hi you!!!";
     }
