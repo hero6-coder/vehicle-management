@@ -17,6 +17,7 @@ public enum ErrorCode implements ITcbsErrorCode {
 	UNKNOWN_ERROR("000", "unknown.error"), 
 	INVALID_PARAMS("001", "invalid.params"),
 	DATA_NOT_FOUND("002", "data.not.found", HttpServletResponse.SC_NOT_FOUND),
+	USER_NOT_EXIST("003", "user.not.exist"),
 	ACTION_TYPE_NOT_FOUND("016", "action.type.not.found"),
 	// FIXME: add more here
 	;

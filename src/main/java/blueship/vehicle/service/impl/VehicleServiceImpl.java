@@ -1,7 +1,11 @@
 package blueship.vehicle.service.impl;
 
+import blueship.vehicle.common.ErrorCode;
 import blueship.vehicle.dto.VehicleDto;
+import blueship.vehicle.entity.User;
 import blueship.vehicle.entity.Vehicle;
+import blueship.vehicle.exception.TcbsException;
+import blueship.vehicle.repository.UserRepository;
 import blueship.vehicle.repository.VehicleRepository;
 import blueship.vehicle.service.VehicleService;
 import org.slf4j.Logger;
@@ -18,6 +22,8 @@ public class VehicleServiceImpl implements VehicleService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     VehicleRepository vehicleRepository;
+    @Autowired
+    UserRepository userRepository;
 //
 //    @Autowired
 //    PasswordEncoder passwordEncoder;
@@ -46,8 +52,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleDto saveVehicle(VehicleDto vehicleDto) {
         logger.info("VehicleServiceImpl#saveVehicle --- Before save: VehicleDto: {}", vehicleDto);
+        User user = userRepository.findById(vehicleDto.getUserId())
+                .orElseThrow(() -> new TcbsException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(vehicleDto.getUserId())));
         Vehicle vehicle = new Vehicle();
         BeanUtils.copyProperties(vehicleDto, vehicle);
+        vehicle.setUser(user);
         vehicle = vehicleRepository.save(vehicle);
         BeanUtils.copyProperties(vehicle, vehicleDto);
         logger.info("VehicleServiceImpl#saveVehicle --- After save: VehicleDto: {}", vehicleDto);
