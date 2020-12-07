@@ -1,7 +1,7 @@
 package blueship.vehicle.controller;
 
-import blueship.vehicle.dto.UserDto;
-import blueship.vehicle.service.UserService;
+import blueship.vehicle.dto.VehicleDto;
+import blueship.vehicle.service.VehicleService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,19 +20,19 @@ import java.util.List;
 public class VehicleController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    UserService userService;
+    VehicleService vehicleService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public List<UserDto> getActiveUsers() {
-        logger.info("UserController#getActiveUsers");
-        return userService.getActiveUser();
+    public List<VehicleDto> getVehicles() {
+        logger.info("VehicleController#getVehicles");
+        return vehicleService.getAllVehicles();
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public UserDto saveUser(@RequestBody UserDto userDto) {
-        logger.info("UserController#saveUser --- user: {}", userDto.toString());
-        return userService.saveUser(userDto);
+    public VehicleDto createVehicle(@RequestBody VehicleDto vehicleDto) {
+        logger.info("VehicleController#createVehicle --- vehicle: {}", vehicleDto.toString());
+        return vehicleService.saveVehicle(vehicleDto);
     }
 }
