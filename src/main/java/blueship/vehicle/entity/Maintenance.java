@@ -33,7 +33,7 @@ public class Maintenance implements Serializable {
 	@Column(name = "note")
 	private String note;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="vehicle_id", nullable=false)
 	private Vehicle vehicle;
 }

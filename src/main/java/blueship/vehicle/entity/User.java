@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -38,5 +38,5 @@ public class User implements Serializable {
 	private LocalDate createdDate;
 
 	@OneToMany(mappedBy="user")
-	private Set<Vehicle> vehicles;
+	private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 }

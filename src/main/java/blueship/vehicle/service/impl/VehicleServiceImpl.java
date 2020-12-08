@@ -27,22 +27,24 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public List<VehicleDto> getVehiclesByUser(Integer userId) {
-
-        return null;
-    }
-
-    @Override
-    public VehicleDto saveVehicle(VehicleDto vehicleDto) {
-        logger.info("VehicleServiceImpl#saveVehicle --- Before save: VehicleDto: {}", vehicleDto);
-        User user = userRepository.findById(vehicleDto.getUserId())
-                .orElseThrow(() -> new TcbsException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(vehicleDto.getUserId())));
-        Vehicle vehicle = new Vehicle();
-        BeanUtils.copyProperties(vehicleDto, vehicle);
-        vehicle.setUser(user);
-        vehicle = vehicleRepository.save(vehicle);
-        BeanUtils.copyProperties(vehicle, vehicleDto);
-        logger.info("VehicleServiceImpl#saveVehicle --- After save: VehicleDto: {}", vehicleDto);
-        return vehicleDto;
+        List<Vehicle> vehicles;
+        if (userId != null) {
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new TcbsException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(userId)));
+            vehicles = vehicleRepository.findAllByUser(user);
+        } else {
+            vehicles = vehicleRepository.findAll();
+        }
+        List<VehicleDto> rtv = new ArrayList<>();
+        if (vehicles != null) {
+            vehicles.stream().forEach(vehicle -> {
+                VehicleDto vehicleDto = new VehicleDto();
+                BeanUtils.copyProperties(vehicle, vehicleDto);
+                rtv.add(vehicleDto);
+            });
+        }
+        logger.info("VehicleServiceImpl#getVehiclesByUser: userId: {} --- return data size:{}", userId, rtv.size());
+        return rtv;
     }
 
     @Override
@@ -58,5 +60,24 @@ public class VehicleServiceImpl implements VehicleService {
         }
         logger.info("VehicleServiceImpl#getAllVehicles --- return data size:{}", rtv.size());
         return rtv;
+    }
+
+    @Override
+    public VehicleDto saveVehicle(VehicleDto vehicleDto) {
+        logger.info("VehicleServiceImpl#saveVehicle --- Before save: VehicleDto: {}", vehicleDto);
+        User user = userRepository.findById(vehicleDto.getUserId())
+                .orElseThrow(() -> new TcbsException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(vehicleDto.getUserId())));
+        try {
+            Vehicle vehicle = new Vehicle();
+            BeanUtils.copyProperties(vehicleDto, vehicle);
+            vehicle.setUser(user);
+            vehicle = vehicleRepository.save(vehicle);
+            BeanUtils.copyProperties(vehicle, vehicleDto);
+            logger.info("VehicleServiceImpl#saveVehicle --- After save: VehicleDto: {}", vehicleDto);
+            return vehicleDto;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new TcbsException(null, ErrorCode.FAILED_PERSIST_DATA, new StringBuilder("Unable to persist Vehicle: ").append(vehicleDto.toString()));
+        }
     }
 }

@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,9 +22,11 @@ public class MaintenanceController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public List<MaintenanceDto> getVehicles() {
-        logger.info("MaintenanceController#getMaintenances");
-        return maintemanceService.getAllMaintenances();
+    public List<MaintenanceDto> getMaintenancesByVehicle(
+        @RequestParam(name = "vehicleId", required = false) Integer vehicleId
+    ) {
+        logger.info("MaintenanceController#getMaintenancesByVehicle: {}", vehicleId);
+        return maintemanceService.getMaintenancesByVehicle(vehicleId);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = {
@@ -35,5 +34,12 @@ public class MaintenanceController {
     public MaintenanceDto createMaintenance(@RequestBody @Validated MaintenanceDto maintenanceDto) {
         logger.info("MaintenanceController#createMaintenance --- maintenance: {}", maintenanceDto.toString());
         return maintemanceService.saveMaintenance(maintenanceDto);
+    }
+
+    @RequestMapping(value = "/{maintenanceId}", method = RequestMethod.DELETE, produces = {
+        MediaType.APPLICATION_JSON_VALUE })
+    public void deleteMaintenance(@PathVariable Integer maintenanceId) {
+        logger.info("MaintenanceController#deleteMaintenance --- maintenanceId: {}", maintenanceId);
+        maintemanceService.deleteMaintenance(maintenanceId);
     }
 }
