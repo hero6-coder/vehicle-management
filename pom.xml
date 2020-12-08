@@ -86,11 +86,12 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
-		<!--		Spring Security -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+		<!--		Spring Security Crypto: Aim to encrypt/decrypt password -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.4.2</version>
+		</dependency>
 		<!--		Spring Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -2,11 +2,11 @@ package blueship.vehicle.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,10 +31,10 @@ public class Vehicle implements Serializable {
 	@CreationTimestamp
 	private LocalDate registrationDate;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 
 	@OneToMany(mappedBy="vehicle")
-	private Set<Maintenance> maintenances;
+	private Set<Maintenance> maintenances = new HashSet<Maintenance>();
 }

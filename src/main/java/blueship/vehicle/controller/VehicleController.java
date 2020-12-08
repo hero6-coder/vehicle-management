@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,10 +21,10 @@ public class VehicleController {
     VehicleService vehicleService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public List<VehicleDto> getVehicles() {
-        logger.info("VehicleController#getVehicles");
-        return vehicleService.getAllVehicles();
+        MediaType.APPLICATION_JSON_VALUE })
+    public List<VehicleDto> getVehiclesByUser(@RequestParam(name = "userId", required = false) Integer userId) {
+        logger.info("VehicleController#getVehiclesByUser: {}", userId);
+        return vehicleService.getVehiclesByUser(userId);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, produces = {
