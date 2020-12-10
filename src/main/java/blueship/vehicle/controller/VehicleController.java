@@ -23,14 +23,14 @@ public class VehicleController {
   @RequestMapping(value = "", method = RequestMethod.GET, produces = {
     MediaType.APPLICATION_JSON_VALUE})
   public List<VehicleDto> getVehiclesByUser(@RequestParam(name = "userId", required = false) Integer userId) {
-    logger.info("VehicleController#getVehiclesByUser: {}", userId);
+    logger.info("VehicleController#getVehiclesByUser: [{}]", userId);
     return vehicleService.getVehiclesByUser(userId);
   }
 
   @RequestMapping(value = "", method = RequestMethod.POST, produces = {
     MediaType.APPLICATION_JSON_VALUE})
   public VehicleDto createVehicle(@RequestBody @Validated VehicleDto vehicleDto) {
-    logger.info("VehicleController#createVehicle --- vehicle: {}", vehicleDto.toString());
+    logger.info("VehicleController#createVehicle --- vehicle: [{}]", vehicleDto);
     return vehicleService.saveVehicle(vehicleDto);
   }
 }

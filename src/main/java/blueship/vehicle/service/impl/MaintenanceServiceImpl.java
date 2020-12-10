@@ -4,7 +4,7 @@ import blueship.vehicle.common.ErrorCode;
 import blueship.vehicle.dto.MaintenanceDto;
 import blueship.vehicle.entity.Maintenance;
 import blueship.vehicle.entity.Vehicle;
-import blueship.vehicle.exception.TcbsException;
+import blueship.vehicle.exception.VmException;
 import blueship.vehicle.repository.MaintenanceRepository;
 import blueship.vehicle.repository.VehicleRepository;
 import blueship.vehicle.service.MaintemanceService;
@@ -30,7 +30,7 @@ public class MaintenanceServiceImpl implements MaintemanceService {
     List<Maintenance> maintenances;
     if (vehicleId != null) {
       Vehicle vehicle = vehicleRepository.findById(vehicleId)
-        .orElseThrow(() -> new TcbsException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(vehicleId)));
+        .orElseThrow(() -> new VmException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(vehicleId)));
       maintenances = maintenanceRepository.findAllByVehicle(vehicle);
     } else {
       maintenances = maintenanceRepository.findAll();
@@ -43,7 +43,7 @@ public class MaintenanceServiceImpl implements MaintemanceService {
         rtv.add(maintenanceDto);
       });
     }
-    logger.info("MaintenanceServiceImpl#getMaintenancesByVehicle: vehicleId: {} --- return data size:{}", vehicleId, rtv.size());
+    logger.info("MaintenanceServiceImpl#getMaintenancesByVehicle: vehicleId: [{}] --- return data size:[{}]", vehicleId, rtv.size());
     return rtv;
   }
 
@@ -58,28 +58,28 @@ public class MaintenanceServiceImpl implements MaintemanceService {
         rtv.add(maintenanceDto);
       });
     }
-    logger.info("MaintenanceServiceImpl#getAllMaintenances --- return data size:{}", rtv.size());
+    logger.info("MaintenanceServiceImpl#getAllMaintenances --- return data size:[{}]", rtv.size());
     return rtv;
   }
 
   @Override
   public MaintenanceDto saveMaintenance(MaintenanceDto maintenanceDto) {
-    logger.info("MaintenanceServiceImpl#saveMaintenance --- Before save: MaintenanceDto: {}", maintenanceDto);
+    logger.info("MaintenanceServiceImpl#saveMaintenance --- Before save: MaintenanceDto: [{}]", maintenanceDto);
     Vehicle vehicle = vehicleRepository.findById(maintenanceDto.getVehicleId())
-      .orElseThrow(() -> new TcbsException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(maintenanceDto.getVehicleId())));
+      .orElseThrow(() -> new VmException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(maintenanceDto.getVehicleId())));
     Maintenance maintenance = new Maintenance();
     BeanUtils.copyProperties(maintenanceDto, maintenance);
     maintenance.setVehicle(vehicle);
     maintenance = maintenanceRepository.save(maintenance);
     BeanUtils.copyProperties(maintenance, maintenanceDto);
-    logger.info("MaintenanceServiceImpl#saveMaintenance --- After save: MaintenanceDto: {}", maintenanceDto);
+    logger.info("MaintenanceServiceImpl#saveMaintenance --- After save: MaintenanceDto: [{}]", maintenanceDto);
     return maintenanceDto;
   }
 
   @Override
   public void deleteMaintenance(Integer maintenanceId) {
     if (maintenanceId == null)
-      throw new TcbsException(null, ErrorCode.INVALID_PARAMS, new StringBuilder("Delete Maintenance failed by input Id null"));
+      throw new VmException(null, ErrorCode.INVALID_PARAMS, new StringBuilder("Delete Maintenance failed by input Id null"));
     maintenanceRepository.deleteById(maintenanceId);
   }
 }

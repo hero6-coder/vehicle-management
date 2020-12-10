@@ -32,7 +32,7 @@ public class UserController {
   @RequestMapping(value = "", method = RequestMethod.POST, produces = {
     MediaType.APPLICATION_JSON_VALUE})
   public UserDto saveUser(@RequestBody UserDto userDto) {
-    logger.info("UserController#saveUser --- user: {}", userDto.toString());
+    logger.info("UserController#saveUser --- user: [{}]", userDto);
     return userService.saveUser(userDto);
   }
 }

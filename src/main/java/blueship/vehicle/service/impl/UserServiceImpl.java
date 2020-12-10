@@ -3,7 +3,7 @@ package blueship.vehicle.service.impl;
 import blueship.vehicle.common.ErrorCode;
 import blueship.vehicle.dto.UserDto;
 import blueship.vehicle.entity.User;
-import blueship.vehicle.exception.TcbsException;
+import blueship.vehicle.exception.VmException;
 import blueship.vehicle.repository.UserRepository;
 import blueship.vehicle.service.UserService;
 import org.slf4j.Logger;
@@ -36,24 +36,24 @@ public class UserServiceImpl implements UserService {
         rtv.add(userDto);
       });
     }
-    logger.info("UserServiceImpl#getActiveUser --- return data size:{}", rtv.size());
+    logger.info("UserServiceImpl#getActiveUser --- return data size:[{}]", rtv.size());
     return rtv;
   }
 
   @Override
   public UserDto saveUser(UserDto userDto) {
     try {
-      logger.info("UserServiceImpl#saveUser --- Before save: UserDto: {}", userDto);
+      logger.info("UserServiceImpl#saveUser --- Before save: UserDto: [{}]", userDto);
       User user = new User();
       userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
       BeanUtils.copyProperties(userDto, user);
       user = userRepository.save(user);
       BeanUtils.copyProperties(user, userDto);
-      logger.info("UserServiceImpl#saveUser --- After save: UserDto: {}", userDto);
+      logger.info("UserServiceImpl#saveUser --- After save: UserDto: [{}]", userDto);
       return userDto;
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
-      throw new TcbsException(null, ErrorCode.FAILED_PERSIST_DATA, new StringBuilder("Unable to persist user: ").append(userDto.toString()));
+      throw new VmException(null, ErrorCode.FAILED_PERSIST_DATA, new StringBuilder("Unable to persist user: ").append(userDto.toString()));
     }
   }
 }

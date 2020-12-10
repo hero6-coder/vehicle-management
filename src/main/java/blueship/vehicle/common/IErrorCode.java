@@ -1,6 +1,6 @@
-package blueship.vehicle.exception;
+package blueship.vehicle.common;
 
-public interface ITcbsErrorCode {
+public interface IErrorCode {
   String getCode();
 
   String getMessageCode();
