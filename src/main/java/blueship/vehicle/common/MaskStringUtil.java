@@ -10,6 +10,7 @@ public class MaskStringUtil {
   public static final String TRANSACTION_CODE_MASK_PATTERN = ".{1,8}$";
   public static final String HEADER_MASK_PATTERN = "(?<= ).*$";
   public static final String COUNTRY_SPECIAL_PATTERN = "[,() ]*";
+
   public static String maskString(String s, String pattern) {
     if (s == null) return s;
     return s.replaceAll(pattern, MASK_CHAR);

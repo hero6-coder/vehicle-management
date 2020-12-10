@@ -19,17 +19,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class VehicleDto implements Serializable {
 
-    private static final long serialVersionUID = -8368566680829343545L;
+  private static final long serialVersionUID = -8368566680829343545L;
 
-    private Integer id;
+  private Integer id;
 
-    @NotNull
-    private String engineNumber;
+  @NotNull
+  private String engineNumber;
 
-    @NotNull
-    private Integer userId;
+  @NotNull
+  private Integer userId;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate registrationDate;
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate registrationDate;
 }

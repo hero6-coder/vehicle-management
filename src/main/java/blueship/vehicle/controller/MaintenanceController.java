@@ -16,30 +16,30 @@ import java.util.List;
 @RequestMapping("/v1/maintenances")
 @Api(value = "maintenances", description = "")
 public class MaintenanceController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    MaintemanceService maintemanceService;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  @Autowired
+  MaintemanceService maintemanceService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public List<MaintenanceDto> getMaintenancesByVehicle(
-        @RequestParam(name = "vehicleId", required = false) Integer vehicleId
-    ) {
-        logger.info("MaintenanceController#getMaintenancesByVehicle: {}", vehicleId);
-        return maintemanceService.getMaintenancesByVehicle(vehicleId);
-    }
+  @RequestMapping(value = "", method = RequestMethod.GET, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public List<MaintenanceDto> getMaintenancesByVehicle(
+    @RequestParam(name = "vehicleId", required = false) Integer vehicleId
+  ) {
+    logger.info("MaintenanceController#getMaintenancesByVehicle: {}", vehicleId);
+    return maintemanceService.getMaintenancesByVehicle(vehicleId);
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public MaintenanceDto createMaintenance(@RequestBody @Validated MaintenanceDto maintenanceDto) {
-        logger.info("MaintenanceController#createMaintenance --- maintenance: {}", maintenanceDto.toString());
-        return maintemanceService.saveMaintenance(maintenanceDto);
-    }
+  @RequestMapping(value = "", method = RequestMethod.POST, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public MaintenanceDto createMaintenance(@RequestBody @Validated MaintenanceDto maintenanceDto) {
+    logger.info("MaintenanceController#createMaintenance --- maintenance: {}", maintenanceDto.toString());
+    return maintemanceService.saveMaintenance(maintenanceDto);
+  }
 
-    @RequestMapping(value = "/{maintenanceId}", method = RequestMethod.DELETE, produces = {
-        MediaType.APPLICATION_JSON_VALUE })
-    public void deleteMaintenance(@PathVariable Integer maintenanceId) {
-        logger.info("MaintenanceController#deleteMaintenance --- maintenanceId: {}", maintenanceId);
-        maintemanceService.deleteMaintenance(maintenanceId);
-    }
+  @RequestMapping(value = "/{maintenanceId}", method = RequestMethod.DELETE, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public void deleteMaintenance(@PathVariable Integer maintenanceId) {
+    logger.info("MaintenanceController#deleteMaintenance --- maintenanceId: {}", maintenanceId);
+    maintemanceService.deleteMaintenance(maintenanceId);
+  }
 }
