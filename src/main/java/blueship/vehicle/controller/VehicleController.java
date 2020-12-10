@@ -1,5 +1,6 @@
 package blueship.vehicle.controller;
 
+import blueship.vehicle.dto.MaintenanceDto;
 import blueship.vehicle.dto.VehicleDto;
 import blueship.vehicle.service.VehicleService;
 import io.swagger.annotations.Api;
@@ -22,9 +23,24 @@ public class VehicleController {
 
   @RequestMapping(value = "", method = RequestMethod.GET, produces = {
     MediaType.APPLICATION_JSON_VALUE})
-  public List<VehicleDto> getVehiclesByUser(@RequestParam(name = "userId", required = false) Integer userId) {
-    logger.info("VehicleController#getVehiclesByUser: [{}]", userId);
-    return vehicleService.getVehiclesByUser(userId);
+  public List<VehicleDto> getAllVehicles() {
+    logger.info("VehicleController#getAllVehicles");
+    return vehicleService.getAllVehicles();
+  }
+
+  @RequestMapping(value = "/{vehicleId}/maintenances", method = RequestMethod.GET, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public List<MaintenanceDto> getMaintenancesByVehicle(@PathVariable(name = "vehicleId") Integer vehicleId) {
+    logger.info("VehicleController#getMaintenancesByVehicle: [{}]", vehicleId);
+    return vehicleService.getMaintenancesByVehicle(vehicleId);
+  }
+
+  @RequestMapping(value = "/{vehicleId}/maintenances/{maintenanceId}", method = RequestMethod.GET, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public MaintenanceDto getMaintenanceByVehicleAndMaintenanceId(
+    @PathVariable(name = "vehicleId") Integer vehicleId, @PathVariable(name = "maintenanceId") Integer maintenanceId) {
+    logger.info("VehicleController#getMaintenanceByVehicleAndMaintenanceId: vehicleId: [{}] --- maintenanceId: [{}]", vehicleId, maintenanceId);
+    return vehicleService.getMaintenancesByVehicleAndId(vehicleId, maintenanceId);
   }
 
   @RequestMapping(value = "", method = RequestMethod.POST, produces = {

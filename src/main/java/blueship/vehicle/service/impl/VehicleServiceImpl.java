@@ -1,12 +1,14 @@
 package blueship.vehicle.service.impl;
 
 import blueship.vehicle.common.ErrorCode;
+import blueship.vehicle.dto.MaintenanceDto;
 import blueship.vehicle.dto.VehicleDto;
 import blueship.vehicle.entity.User;
 import blueship.vehicle.entity.Vehicle;
 import blueship.vehicle.exception.VmException;
-import blueship.vehicle.repository.UserRepository;
 import blueship.vehicle.repository.VehicleRepository;
+import blueship.vehicle.service.MaintemanceService;
+import blueship.vehicle.service.UserService;
 import blueship.vehicle.service.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +25,20 @@ public class VehicleServiceImpl implements VehicleService {
   @Autowired
   VehicleRepository vehicleRepository;
   @Autowired
-  UserRepository userRepository;
+  UserService userService;
+  @Autowired
+  MaintemanceService maintemanceService;
 
   @Override
-  public List<VehicleDto> getVehiclesByUser(Integer userId) {
-    List<Vehicle> vehicles;
-    if (userId != null) {
-      User user = userRepository.findById(userId)
-        .orElseThrow(() -> new VmException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(userId)));
-      vehicles = vehicleRepository.findAllByUser(user);
-    } else {
-      vehicles = vehicleRepository.findAll();
-    }
+  public Vehicle getVehicleById(Integer vehicleId) {
+    logger.info("VehicleServiceImpl#getVehicleById --- vehicleId: [{}]", vehicleId);
+    return vehicleRepository.findById(vehicleId)
+      .orElseThrow(() -> new VmException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(vehicleId)));
+  }
+
+  @Override
+  public List<VehicleDto> getVehiclesByUser(User user) {
+    List<Vehicle> vehicles = vehicleRepository.findAllByUser(user);
     List<VehicleDto> rtv = new ArrayList<>();
     if (vehicles != null) {
       vehicles.stream().forEach(vehicle -> {
@@ -43,8 +47,28 @@ public class VehicleServiceImpl implements VehicleService {
         rtv.add(vehicleDto);
       });
     }
-    logger.info("VehicleServiceImpl#getVehiclesByUser: userId: [{}] --- return data size:[{}]", userId, rtv.size());
+    logger.info("VehicleServiceImpl#getVehiclesByUser: userId: [{}] --- return data size:[{}]", user.getId(), rtv.size());
     return rtv;
+  }
+
+  @Override
+  public List<MaintenanceDto> getMaintenancesByVehicle(Integer vehicleId) {
+    Vehicle vehicle = vehicleRepository.findById(vehicleId)
+      .orElseThrow(() -> new VmException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(vehicleId)));
+
+    List<MaintenanceDto> maintenances = maintemanceService.getMaintenancesByVehicle(vehicle);
+    logger.info("VehicleServiceImpl#getMaintenancesByVehicle: vehicleId: [{}] --- return data size:[{}]", vehicleId, maintenances.size());
+    return maintenances;
+  }
+
+  @Override
+  public MaintenanceDto getMaintenancesByVehicleAndId(Integer vehicleId, Integer maintenanceId) {
+    Vehicle vehicle = vehicleRepository.findById(vehicleId)
+      .orElseThrow(() -> new VmException(null, ErrorCode.VEHICLE_NOT_EXIST, new StringBuilder("VehicleId does not exist: ").append(vehicleId)));
+
+    MaintenanceDto maintenance = maintemanceService.getMaintenancesByIdAndVehicle(maintenanceId, vehicle);
+    logger.info("VehicleServiceImpl#getMaintenancesByVehicle: vehicleId: [{}] --- Maintenance:[{}]", vehicleId, maintenance);
+    return maintenance;
   }
 
   @Override
@@ -65,8 +89,7 @@ public class VehicleServiceImpl implements VehicleService {
   @Override
   public VehicleDto saveVehicle(VehicleDto vehicleDto) {
     logger.info("VehicleServiceImpl#saveVehicle --- Before save: VehicleDto: [{}]", vehicleDto);
-    User user = userRepository.findById(vehicleDto.getUserId())
-      .orElseThrow(() -> new VmException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist: ").append(vehicleDto.getUserId())));
+    User user = userService.getUserById(vehicleDto.getUserId());
     try {
       Vehicle vehicle = new Vehicle();
       BeanUtils.copyProperties(vehicleDto, vehicle);
