@@ -15,18 +15,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserDto implements Serializable {
 
-    private static final long serialVersionUID = -8368566680829343545L;
+  private static final long serialVersionUID = -8368566680829343545L;
 
-    private Integer id;
+  private Integer id;
 
-    private String email;
+  private String email;
 
-    @ToString.Exclude
-    private String password;
+  @ToString.Exclude
+  private String password;
 
-    private Integer status = 1;
+  private Integer status = 1;
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate createdDate;
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate createdDate;
 }

@@ -1,9 +1,9 @@
 package blueship.vehicle.exception;
 
 public interface ITcbsErrorCode {
-    String getCode();
+  String getCode();
 
-    String getMessageCode();
+  String getMessageCode();
 
-    Integer getHttpStatus();
+  Integer getHttpStatus();
 }

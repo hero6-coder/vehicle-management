@@ -18,20 +18,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaintenanceDto implements Serializable {
-    private static final long serialVersionUID = 4376692095053321645L;
+  private static final long serialVersionUID = 4376692095053321645L;
 
-    private Integer id;
+  private Integer id;
 
-    @NotNull
-    private Integer vehicleId;
+  @NotNull
+  private Integer vehicleId;
 
-    @NotNull
-    private Float price;
+  @NotNull
+  private Float price;
 
-    @NotNull
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate bookingDate;
+  @NotNull
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  private LocalDate bookingDate;
 
-    private String note;
+  private String note;
 }

@@ -28,65 +28,65 @@ import java.util.Locale;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice(annotations = RestController.class)
 public class TcbsControllerHandlerAdvice extends ResponseEntityExceptionHandler {
-	private static Logger logger = LoggerFactory.getLogger(TcbsControllerHandlerAdvice.class);
-	private final String TCBS_ERROR_CODE = "TcbsErrorCode";
-	private final String TCBS_ERROR_MESSAGE = "TcbsErrorMessage";
-	private final String BLANK = "BLANK";
-	@Value("${info.app.id}")
-	private String appId;
-	@Autowired
-	private MessageSource messageSource;
-	@Autowired
-	private Locale defaultLocale;
+  private static Logger logger = LoggerFactory.getLogger(TcbsControllerHandlerAdvice.class);
+  private final String TCBS_ERROR_CODE = "TcbsErrorCode";
+  private final String TCBS_ERROR_MESSAGE = "TcbsErrorMessage";
+  private final String BLANK = "BLANK";
+  @Value("${info.app.id}")
+  private String appId;
+  @Autowired
+  private MessageSource messageSource;
+  @Autowired
+  private Locale defaultLocale;
 
-	@ExceptionHandler(TcbsException.class)
-	public @ResponseBody
-    TcbsAPIException handleCustomException(TcbsException tcbsex, HttpServletRequest request,
-                                           HttpServletResponse response) throws IOException {
-		// write error
-		logger.warn(
-				"ExceptionHandelerAdvice:handle controller exception:{}<=>{}<=>{} {}",
-				tcbsex.getErrorCode(), tcbsex.getMessage(), tcbsex.getTraceMessage(),
-				LoggingUtils.objToStringIgnoreEx(tcbsex.transformToRestError(messageSource, defaultLocale)));
+  @ExceptionHandler(TcbsException.class)
+  public @ResponseBody
+  TcbsAPIException handleCustomException(TcbsException tcbsex, HttpServletRequest request,
+                                         HttpServletResponse response) throws IOException {
+    // write error
+    logger.warn(
+      "ExceptionHandelerAdvice:handle controller exception:{}<=>{}<=>{} {}",
+      tcbsex.getErrorCode(), tcbsex.getMessage(), tcbsex.getTraceMessage(),
+      LoggingUtils.objToStringIgnoreEx(tcbsex.transformToRestError(messageSource, defaultLocale)));
 
-		logger.warn(tcbsex.getMessage(), tcbsex);
+    logger.warn(tcbsex.getMessage(), tcbsex);
 
-		// response status
-		response.setStatus(
-				tcbsex.getHttpStatus() == null ? HttpServletResponse.SC_BAD_REQUEST : tcbsex.getHttpStatus());
+    // response status
+    response.setStatus(
+      tcbsex.getHttpStatus() == null ? HttpServletResponse.SC_BAD_REQUEST : tcbsex.getHttpStatus());
 
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
-		// transform Exception to rest api
-		TcbsRestError restError = tcbsex.transformToRestError(messageSource, defaultLocale);
-		TcbsAPIException rtv = new TcbsAPIException();
+    // transform Exception to rest api
+    TcbsRestError restError = tcbsex.transformToRestError(messageSource, defaultLocale);
+    TcbsAPIException rtv = new TcbsAPIException();
 
-		String errorCode = appId + restError.getCode();
-		rtv.setCode(errorCode);
+    String errorCode = appId + restError.getCode();
+    rtv.setCode(errorCode);
 
-		// convert error code to message
-		if (tcbsex.getErrorCode().getCode().equals(TcbsHandlerErrorCode.FORM_ERROR.getCode())
-				&& restError.getFieldErrors().size() > 0) {
-			TcbsFieldError tcbsFieldError = restError.getFieldErrors().get(0);
-			String messageCode = tcbsFieldError.getErrorMessage();
-			try {
-				messageCode = StringUtils.replace(messageCode, "{", "");
-				messageCode = StringUtils.replace(messageCode, "}", "");
-				String message = messageSource.getMessage(messageCode, tcbsFieldError.getErrorMessageArgs(),
-						defaultLocale);
-				rtv.setMessage(tcbsFieldError.getFieldId() + ": " + message);
-			} catch (NoSuchMessageException e) {
-				logger.warn(e.getMessage());
-				rtv.setMessage(messageCode);
-			}
-		} else {
-			rtv.setMessage(restError.getMessage());
-		}
+    // convert error code to message
+    if (tcbsex.getErrorCode().getCode().equals(TcbsHandlerErrorCode.FORM_ERROR.getCode())
+      && restError.getFieldErrors().size() > 0) {
+      TcbsFieldError tcbsFieldError = restError.getFieldErrors().get(0);
+      String messageCode = tcbsFieldError.getErrorMessage();
+      try {
+        messageCode = StringUtils.replace(messageCode, "{", "");
+        messageCode = StringUtils.replace(messageCode, "}", "");
+        String message = messageSource.getMessage(messageCode, tcbsFieldError.getErrorMessageArgs(),
+          defaultLocale);
+        rtv.setMessage(tcbsFieldError.getFieldId() + ": " + message);
+      } catch (NoSuchMessageException e) {
+        logger.warn(e.getMessage());
+        rtv.setMessage(messageCode);
+      }
+    } else {
+      rtv.setMessage(restError.getMessage());
+    }
 
-		// return to client
-		return rtv;
+    // return to client
+    return rtv;
 
-	}
+  }
 //
 //	@ExceptionHandler(ThrottlingException.class)
 //	public @ResponseBody
@@ -135,30 +135,30 @@ public class TcbsControllerHandlerAdvice extends ResponseEntityExceptionHandler 
 //
 //	}
 
-	@ExceptionHandler(Exception.class)
-	public @ResponseBody
-    TcbsAPIException handleCustomException(Exception ex, HttpServletRequest request,
-                                           HttpServletResponse response) throws IOException {
-		// write to file logs
-		logger.error(
-				"ExceptionHandelerAdvice:handle controller exception:{}", ex.getMessage());
+  @ExceptionHandler(Exception.class)
+  public @ResponseBody
+  TcbsAPIException handleCustomException(Exception ex, HttpServletRequest request,
+                                         HttpServletResponse response) throws IOException {
+    // write to file logs
+    logger.error(
+      "ExceptionHandelerAdvice:handle controller exception:{}", ex.getMessage());
 
-		logger.error(ex.getMessage(), ex);
+    logger.error(ex.getMessage(), ex);
 
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
-		TcbsAPIException rtv = new TcbsAPIException();
+    TcbsAPIException rtv = new TcbsAPIException();
 
-		String errorCode = appId + TcbsHandlerErrorCode.UNKNOWN_ERROR.getCode();
-		rtv.setCode(errorCode);
+    String errorCode = appId + TcbsHandlerErrorCode.UNKNOWN_ERROR.getCode();
+    rtv.setCode(errorCode);
 
-		// convert error code to message
-		String message = messageSource.getMessage(TcbsHandlerErrorCode.UNKNOWN_ERROR.getMessageCode(), null, defaultLocale);
-		rtv.setMessage(message);
+    // convert error code to message
+    String message = messageSource.getMessage(TcbsHandlerErrorCode.UNKNOWN_ERROR.getMessageCode(), null, defaultLocale);
+    rtv.setMessage(message);
 
-		// return to client
-		return rtv;
+    // return to client
+    return rtv;
 
-	}
+  }
 }

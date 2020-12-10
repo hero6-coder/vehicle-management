@@ -18,21 +18,21 @@ import java.util.List;
 @RequestMapping("/v1/users")
 @Api(value = "users", description = "")
 public class UserController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    UserService userService;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  @Autowired
+  UserService userService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public List<UserDto> getActiveUsers() {
-        logger.info("UserController#getActiveUsers");
-        return userService.getActiveUser();
-    }
+  @RequestMapping(value = "", method = RequestMethod.GET, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public List<UserDto> getActiveUsers() {
+    logger.info("UserController#getActiveUsers");
+    return userService.getActiveUser();
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public UserDto saveUser(@RequestBody UserDto userDto) {
-        logger.info("UserController#saveUser --- user: {}", userDto.toString());
-        return userService.saveUser(userDto);
-    }
+  @RequestMapping(value = "", method = RequestMethod.POST, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public UserDto saveUser(@RequestBody UserDto userDto) {
+    logger.info("UserController#saveUser --- user: {}", userDto.toString());
+    return userService.saveUser(userDto);
+  }
 }

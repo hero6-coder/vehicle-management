@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class VehicleManagementApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VehicleManagementApplication.class, args);
-		log.info("Application started!!!");
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(VehicleManagementApplication.class, args);
+    log.info("Application started!!!");
+  }
 
 }

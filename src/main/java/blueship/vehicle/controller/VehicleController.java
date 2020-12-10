@@ -16,21 +16,21 @@ import java.util.List;
 @RequestMapping("/v1/vehicles")
 @Api(value = "vehicles", description = "")
 public class VehicleController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    VehicleService vehicleService;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  @Autowired
+  VehicleService vehicleService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-        MediaType.APPLICATION_JSON_VALUE })
-    public List<VehicleDto> getVehiclesByUser(@RequestParam(name = "userId", required = false) Integer userId) {
-        logger.info("VehicleController#getVehiclesByUser: {}", userId);
-        return vehicleService.getVehiclesByUser(userId);
-    }
+  @RequestMapping(value = "", method = RequestMethod.GET, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public List<VehicleDto> getVehiclesByUser(@RequestParam(name = "userId", required = false) Integer userId) {
+    logger.info("VehicleController#getVehiclesByUser: {}", userId);
+    return vehicleService.getVehiclesByUser(userId);
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = {
-            MediaType.APPLICATION_JSON_VALUE })
-    public VehicleDto createVehicle(@RequestBody @Validated VehicleDto vehicleDto) {
-        logger.info("VehicleController#createVehicle --- vehicle: {}", vehicleDto.toString());
-        return vehicleService.saveVehicle(vehicleDto);
-    }
+  @RequestMapping(value = "", method = RequestMethod.POST, produces = {
+    MediaType.APPLICATION_JSON_VALUE})
+  public VehicleDto createVehicle(@RequestBody @Validated VehicleDto vehicleDto) {
+    logger.info("VehicleController#createVehicle --- vehicle: {}", vehicleDto.toString());
+    return vehicleService.saveVehicle(vehicleDto);
+  }
 }

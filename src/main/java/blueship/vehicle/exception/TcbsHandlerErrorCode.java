@@ -6,52 +6,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TcbsHandlerErrorCode implements ITcbsErrorCode {
-	UNKNOWN_ERROR("000", "unknown.error"),
-	FORM_ERROR("003", "form.error"),
-	THROTTLING_RATTING_LIMITED("133", "throttling.ratting.limited"),
-	;
+  UNKNOWN_ERROR("000", "unknown.error"),
+  FORM_ERROR("003", "form.error"),
+  THROTTLING_RATTING_LIMITED("133", "throttling.ratting.limited"),
+  ;
 
-	// lookup table to be used to find enum for conversion
-	private static final Map<String, TcbsHandlerErrorCode> lookup = new HashMap<String, TcbsHandlerErrorCode>();
-	static {
-		for (TcbsHandlerErrorCode e : EnumSet.allOf(TcbsHandlerErrorCode.class))
-			lookup.put(e.getCode(), e);
-	}
+  // lookup table to be used to find enum for conversion
+  private static final Map<String, TcbsHandlerErrorCode> lookup = new HashMap<String, TcbsHandlerErrorCode>();
 
-	private String code;
+  static {
+    for (TcbsHandlerErrorCode e : EnumSet.allOf(TcbsHandlerErrorCode.class))
+      lookup.put(e.getCode(), e);
+  }
 
-	private String messageCode;
-	private Integer httpStatus;
+  private String code;
 
-	TcbsHandlerErrorCode(String errorCode, String messageCode) {
-		this.code = errorCode;
-		this.messageCode = messageCode;
-		this.httpStatus = HttpServletResponse.SC_BAD_REQUEST;
-	}
+  private String messageCode;
+  private Integer httpStatus;
 
-	TcbsHandlerErrorCode(String errorCode, String messageCode, Integer httpStatus) {
-		this.code = errorCode;
-		this.messageCode = messageCode;
-		this.httpStatus = httpStatus;
-	}
+  TcbsHandlerErrorCode(String errorCode, String messageCode) {
+    this.code = errorCode;
+    this.messageCode = messageCode;
+    this.httpStatus = HttpServletResponse.SC_BAD_REQUEST;
+  }
 
-	public String getCode() {
-		return this.code;
-	}
+  TcbsHandlerErrorCode(String errorCode, String messageCode, Integer httpStatus) {
+    this.code = errorCode;
+    this.messageCode = messageCode;
+    this.httpStatus = httpStatus;
+  }
 
-	public static TcbsHandlerErrorCode get(String errorCode) {
-		return lookup.get(errorCode);
-	}
+  public static TcbsHandlerErrorCode get(String errorCode) {
+    return lookup.get(errorCode);
+  }
 
-	public void setErrorCode(String errorCode) {
-		this.code = errorCode;
-	}
+  public String getCode() {
+    return this.code;
+  }
 
-	public String getMessageCode() {
-		return messageCode;
-	}
+  public void setErrorCode(String errorCode) {
+    this.code = errorCode;
+  }
 
-	public Integer getHttpStatus() {
-		return httpStatus;
-	}
+  public String getMessageCode() {
+    return messageCode;
+  }
+
+  public Integer getHttpStatus() {
+    return httpStatus;
+  }
 }
