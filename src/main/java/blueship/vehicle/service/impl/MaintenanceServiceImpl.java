@@ -79,7 +79,7 @@ public class MaintenanceServiceImpl implements MaintemanceService {
       BeanUtils.copyProperties(maintenance, maintenanceDto);
       logger.info("MaintenanceServiceImpl#saveMaintenance --- After save: MaintenanceDto: [{}]", maintenanceDto);
       return maintenanceDto;
-    } catch (BeansException e) {
+    } catch (Exception e) {
       logger.error(e.getMessage(), e);
       throw new VmException(null, ErrorCode.FAILED_PERSIST_DATA, new StringBuilder("Unable to persist Vehicle: ").append(maintenanceDto.toString()));
     }
