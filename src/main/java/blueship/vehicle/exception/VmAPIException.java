@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TcbsAPIException implements Serializable {
+public class VmAPIException implements Serializable {
   private static final long serialVersionUID = 2816364295034386832L;
   private String code;
   private String message;

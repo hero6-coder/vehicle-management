@@ -2,14 +2,14 @@ package blueship.vehicle.exception;
 
 import java.io.Serializable;
 
-public class TcbsFieldError implements Serializable {
+public class VmFieldError implements Serializable {
   private static final long serialVersionUID = 6119763179869680268L;
   private String fieldId;
   private String errorCode;
   private String errorMessage;
   private Object[] errorMessageArgs;
 
-  public TcbsFieldError() {
+  public VmFieldError() {
   }
 
   public String getFieldId() {

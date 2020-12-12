@@ -1,21 +1,23 @@
 package blueship.vehicle.exception;
 
+import blueship.vehicle.common.IErrorCode;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum TcbsHandlerErrorCode implements ITcbsErrorCode {
+public enum VmHandlerErrorCode implements IErrorCode {
   UNKNOWN_ERROR("000", "unknown.error"),
   FORM_ERROR("003", "form.error"),
   THROTTLING_RATTING_LIMITED("133", "throttling.ratting.limited"),
   ;
 
   // lookup table to be used to find enum for conversion
-  private static final Map<String, TcbsHandlerErrorCode> lookup = new HashMap<String, TcbsHandlerErrorCode>();
+  private static final Map<String, VmHandlerErrorCode> lookup = new HashMap<String, VmHandlerErrorCode>();
 
   static {
-    for (TcbsHandlerErrorCode e : EnumSet.allOf(TcbsHandlerErrorCode.class))
+    for (VmHandlerErrorCode e : EnumSet.allOf(VmHandlerErrorCode.class))
       lookup.put(e.getCode(), e);
   }
 
@@ -24,19 +26,19 @@ public enum TcbsHandlerErrorCode implements ITcbsErrorCode {
   private String messageCode;
   private Integer httpStatus;
 
-  TcbsHandlerErrorCode(String errorCode, String messageCode) {
+  VmHandlerErrorCode(String errorCode, String messageCode) {
     this.code = errorCode;
     this.messageCode = messageCode;
     this.httpStatus = HttpServletResponse.SC_BAD_REQUEST;
   }
 
-  TcbsHandlerErrorCode(String errorCode, String messageCode, Integer httpStatus) {
+  VmHandlerErrorCode(String errorCode, String messageCode, Integer httpStatus) {
     this.code = errorCode;
     this.messageCode = messageCode;
     this.httpStatus = httpStatus;
   }
 
-  public static TcbsHandlerErrorCode get(String errorCode) {
+  public static VmHandlerErrorCode get(String errorCode) {
     return lookup.get(errorCode);
   }
 

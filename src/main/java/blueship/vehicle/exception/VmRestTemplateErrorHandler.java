@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-public class TcbsRestTemplateErrorHandler implements ResponseErrorHandler {
-  private static Logger logger = LoggerFactory.getLogger(TcbsRestTemplateErrorHandler.class);
+public class VmRestTemplateErrorHandler implements ResponseErrorHandler {
+  private static Logger logger = LoggerFactory.getLogger(VmRestTemplateErrorHandler.class);
   private ObjectMapper mapper;
 
-  public TcbsRestTemplateErrorHandler(ObjectMapper mapper) {
+  public VmRestTemplateErrorHandler(ObjectMapper mapper) {
     this.mapper = mapper;
   }
 
@@ -34,10 +34,10 @@ public class TcbsRestTemplateErrorHandler implements ResponseErrorHandler {
     StringWriter writer = new StringWriter();
     IOUtils.copy(ips, writer, "UTF-8");
     String restErrorStr = writer.toString();
-    logger.info("restErrorStr: {}", restErrorStr);
+    logger.info("restErrorStr: [{}]", restErrorStr);
 
     try {
-      TcbsRestError restError = (TcbsRestError) this.mapper.readValue(restErrorStr, TcbsRestError.class);
+      VmRestError restError = (VmRestError) this.mapper.readValue(restErrorStr, VmRestError.class);
       if (StringUtils.isEmpty(restError.getCode()) && !StringUtils.isEmpty(restError.getError())) {
         restError.setCode(restError.getError());
       }
@@ -48,10 +48,10 @@ public class TcbsRestTemplateErrorHandler implements ResponseErrorHandler {
 
       HttpStatus status = response.getStatusCode();
       Integer httpStatus = status.value();
-      throw new TcbsException(restError, httpStatus);
+      throw new VmException(restError, httpStatus);
     } catch (IOException var8) {
       logger.error(var8.getMessage(), var8);
-      TcbsException ex = new TcbsException(var8, ErrorCode.UNKNOWN_ERROR, new StringBuilder(var8.getMessage()));
+      VmException ex = new VmException(var8, ErrorCode.UNKNOWN_ERROR, new StringBuilder(var8.getMessage()));
       ex.setHttpStatus(response.getRawStatusCode());
       throw ex;
     }

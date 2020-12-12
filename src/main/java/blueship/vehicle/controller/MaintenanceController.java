@@ -22,24 +22,22 @@ public class MaintenanceController {
 
   @RequestMapping(value = "", method = RequestMethod.GET, produces = {
     MediaType.APPLICATION_JSON_VALUE})
-  public List<MaintenanceDto> getMaintenancesByVehicle(
-    @RequestParam(name = "vehicleId", required = false) Integer vehicleId
-  ) {
-    logger.info("MaintenanceController#getMaintenancesByVehicle: {}", vehicleId);
-    return maintemanceService.getMaintenancesByVehicle(vehicleId);
+  public List<MaintenanceDto> getAllMaintenances() {
+    logger.info("VehicleController#getAllMaintenances");
+    return maintemanceService.getAllMaintenances();
   }
 
   @RequestMapping(value = "", method = RequestMethod.POST, produces = {
     MediaType.APPLICATION_JSON_VALUE})
   public MaintenanceDto createMaintenance(@RequestBody @Validated MaintenanceDto maintenanceDto) {
-    logger.info("MaintenanceController#createMaintenance --- maintenance: {}", maintenanceDto.toString());
+    logger.info("MaintenanceController#createMaintenance --- maintenance: [{}]", maintenanceDto);
     return maintemanceService.saveMaintenance(maintenanceDto);
   }
 
   @RequestMapping(value = "/{maintenanceId}", method = RequestMethod.DELETE, produces = {
     MediaType.APPLICATION_JSON_VALUE})
   public void deleteMaintenance(@PathVariable Integer maintenanceId) {
-    logger.info("MaintenanceController#deleteMaintenance --- maintenanceId: {}", maintenanceId);
+    logger.info("MaintenanceController#deleteMaintenance --- maintenanceId: [{}]", maintenanceId);
     maintemanceService.deleteMaintenance(maintenanceId);
   }
 }

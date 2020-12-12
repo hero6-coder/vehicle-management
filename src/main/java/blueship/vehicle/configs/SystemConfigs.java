@@ -1,8 +1,8 @@
 package blueship.vehicle.configs;
 
 import blueship.vehicle.common.Constants;
-import blueship.vehicle.exception.TcbsRestTemplateErrorHandler;
-import blueship.vehicle.exception.TcbsRestTemplateInterceptor;
+import blueship.vehicle.exception.VmRestTemplateErrorHandler;
+import blueship.vehicle.exception.VmRestTemplateInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,19 +45,6 @@ public class SystemConfigs {
 
   @Bean
   public RestTemplate getResttemplate() {
-//		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-//
-//	    SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
-//
-//		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-//
-//		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-
-//		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-
-//		requestFactory.setHttpClient(httpClient);
-//		RestTemplate restClient = new RestTemplate(requestFactory);
-
     RestTemplate restClient = new RestTemplate();
     List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 
@@ -74,10 +61,10 @@ public class SystemConfigs {
     messageConverters.add(converter);
 
     restClient.setMessageConverters(messageConverters);
-    restClient.setErrorHandler(new TcbsRestTemplateErrorHandler(getObjectMapper()));
+    restClient.setErrorHandler(new VmRestTemplateErrorHandler(getObjectMapper()));
 
     List<ClientHttpRequestInterceptor> interceptors = restClient.getInterceptors();
-    interceptors.add(new TcbsRestTemplateInterceptor(apiKey));
+    interceptors.add(new VmRestTemplateInterceptor(apiKey));
     restClient.setInterceptors(interceptors);
     return restClient;
   }
@@ -135,23 +122,7 @@ public class SystemConfigs {
   public Locale defaultLocale() {
     Locale bean = new Locale("vi", "VN");
     return bean;
-//		return Locale.getDefault();
   }
-
-//	@Bean
-//	public RetryTemplate retryTemplate() {
-//		RetryTemplate retryTemplate = new RetryTemplate();
-//
-//		FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
-//		fixedBackOffPolicy.setBackOffPeriod(2000l);
-//		retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
-//
-//		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-//		retryPolicy.setMaxAttempts(maxAttempts);
-//		retryTemplate.setRetryPolicy(retryPolicy);
-//
-//		return retryTemplate;
-//	}
 
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {

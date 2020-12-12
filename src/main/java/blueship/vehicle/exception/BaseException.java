@@ -1,5 +1,6 @@
 package blueship.vehicle.exception;
 
+import blueship.vehicle.common.IErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -14,9 +15,9 @@ public class BaseException extends RuntimeException {
   protected String messageCode;
   protected Object[] arguments;
   protected Integer httpStatus;
-  protected ITcbsErrorCode errorCode;
+  protected IErrorCode errorCode;
   protected String traceMessage;
-  private List<TcbsFieldError> fieldErrors = new ArrayList();
+  private List<VmFieldError> fieldErrors = new ArrayList();
 
   public BaseException() {
   }
@@ -49,11 +50,11 @@ public class BaseException extends RuntimeException {
     this.httpStatus = httpStatus;
   }
 
-  public ITcbsErrorCode getErrorCode() {
+  public IErrorCode getErrorCode() {
     return this.errorCode;
   }
 
-  public void setErrorCode(ITcbsErrorCode errorCode) {
+  public void setErrorCode(IErrorCode errorCode) {
     this.errorCode = errorCode;
   }
 
@@ -65,16 +66,16 @@ public class BaseException extends RuntimeException {
     this.traceMessage = traceMessage;
   }
 
-  public List<TcbsFieldError> getFieldErrors() {
+  public List<VmFieldError> getFieldErrors() {
     return this.fieldErrors;
   }
 
-  public void setFieldErrors(List<TcbsFieldError> fieldErrors) {
+  public void setFieldErrors(List<VmFieldError> fieldErrors) {
     this.fieldErrors = fieldErrors;
   }
 
-  public List<TcbsFieldError> addFieldError(String fieldId, String errorCode, String errorMessage) {
-    TcbsFieldError fieldError = new TcbsFieldError();
+  public List<VmFieldError> addFieldError(String fieldId, String errorCode, String errorMessage) {
+    VmFieldError fieldError = new VmFieldError();
     fieldError.setFieldId(fieldId);
     fieldError.setErrorCode(errorCode);
     fieldError.setErrorMessage(errorMessage);
@@ -82,8 +83,8 @@ public class BaseException extends RuntimeException {
     return this.fieldErrors;
   }
 
-  public List<TcbsFieldError> addFieldError(String fieldId, String errorCode, String errorMessage, Object[] errorMessageArgs) {
-    TcbsFieldError fieldError = new TcbsFieldError();
+  public List<VmFieldError> addFieldError(String fieldId, String errorCode, String errorMessage, Object[] errorMessageArgs) {
+    VmFieldError fieldError = new VmFieldError();
     fieldError.setFieldId(fieldId);
     fieldError.setErrorCode(errorCode);
     fieldError.setErrorMessage(errorMessage);
@@ -92,8 +93,8 @@ public class BaseException extends RuntimeException {
     return this.fieldErrors;
   }
 
-  public TcbsRestError transformToRestError() {
-    TcbsRestError restError = new TcbsRestError();
+  public VmRestError transformToRestError() {
+    VmRestError restError = new VmRestError();
     restError.setCode(this.errorCode.getCode());
     restError.setTraceMessage(this.traceMessage);
     restError.setMessage(this.errorCode.getMessageCode());
@@ -102,8 +103,8 @@ public class BaseException extends RuntimeException {
     return restError;
   }
 
-  public TcbsRestError transformToRestError(MessageSource messageSource, Locale locale) {
-    TcbsRestError restError = new TcbsRestError();
+  public VmRestError transformToRestError(MessageSource messageSource, Locale locale) {
+    VmRestError restError = new VmRestError();
     restError.setCode(this.errorCode.getCode());
     restError.setTraceMessage(this.traceMessage);
     String messageCode = this.errorCode.getMessageCode();

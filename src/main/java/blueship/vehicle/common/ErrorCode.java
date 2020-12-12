@@ -1,7 +1,5 @@
 package blueship.vehicle.common;
 
-import blueship.vehicle.exception.ITcbsErrorCode;
-
 import javax.servlet.http.HttpServletResponse;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -12,15 +10,14 @@ import java.util.Map;
  *
  * @author TruongNQ
  */
-public enum ErrorCode implements ITcbsErrorCode {
+public enum ErrorCode implements IErrorCode {
 
   UNKNOWN_ERROR("000", "unknown.error"),
   INVALID_PARAMS("001", "invalid.params"),
-  DATA_NOT_FOUND("002", "data.not.found", HttpServletResponse.SC_NOT_FOUND),
-  USER_NOT_EXIST("003", "user.not.exist"),
-  VEHICLE_NOT_EXIST("004", "vehicle.not.exist"),
+  USER_NOT_EXIST("002", "user.not.exist", HttpServletResponse.SC_NOT_FOUND),
+  VEHICLE_NOT_EXIST("003", "vehicle.not.exist", HttpServletResponse.SC_NOT_FOUND),
+  MAINTENANCE_NOT_EXIST("004", "maintenance.not.exist", HttpServletResponse.SC_NOT_FOUND),
   FAILED_PERSIST_DATA("005", "failed.persist.data"),
-  ACTION_TYPE_NOT_FOUND("016", "action.type.not.found"),
   // FIXME: add more here
   ;
 

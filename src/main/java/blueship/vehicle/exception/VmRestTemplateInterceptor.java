@@ -8,12 +8,12 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
-public class TcbsRestTemplateInterceptor implements ClientHttpRequestInterceptor {
+public class VmRestTemplateInterceptor implements ClientHttpRequestInterceptor {
   private static final String AGENT = "X-User-Agent";
   private static final String AGENT_ID = "Bond trading v1.0-Service code 204";
   private String apiKey;
 
-  public TcbsRestTemplateInterceptor(String apiKey) {
+  public VmRestTemplateInterceptor(String apiKey) {
     super();
     this.apiKey = apiKey;
   }

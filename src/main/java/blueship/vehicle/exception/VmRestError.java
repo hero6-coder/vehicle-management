@@ -9,7 +9,7 @@ import java.util.List;
 @JsonIgnoreProperties(
   ignoreUnknown = true
 )
-public class TcbsRestError implements Serializable {
+public class VmRestError implements Serializable {
   private static final long serialVersionUID = 7853373628294414978L;
   protected String traceMessage;
   private String status = "error";
@@ -19,10 +19,10 @@ public class TcbsRestError implements Serializable {
   private Object[] arguments;
   private Long timestamp = System.currentTimeMillis();
   private String exception;
-  private List<TcbsFieldError> fieldErrors = new ArrayList();
+  private List<VmFieldError> fieldErrors = new ArrayList();
   private String traceId;
 
-  public TcbsRestError() {
+  public VmRestError() {
   }
 
   public String getStatus() {
@@ -73,11 +73,11 @@ public class TcbsRestError implements Serializable {
     this.traceMessage = traceMessage;
   }
 
-  public List<TcbsFieldError> getFieldErrors() {
+  public List<VmFieldError> getFieldErrors() {
     return this.fieldErrors;
   }
 
-  public void setFieldErrors(List<TcbsFieldError> fieldErrors) {
+  public void setFieldErrors(List<VmFieldError> fieldErrors) {
     this.fieldErrors = fieldErrors;
   }
 
