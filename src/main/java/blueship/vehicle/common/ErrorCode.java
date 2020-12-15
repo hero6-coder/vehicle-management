@@ -14,9 +14,9 @@ public enum ErrorCode implements IErrorCode {
 
   UNKNOWN_ERROR("000", "unknown.error"),
   INVALID_PARAMS("001", "invalid.params"),
-  USER_NOT_EXIST("002", "user.not.exist", HttpServletResponse.SC_NOT_FOUND),
-  VEHICLE_NOT_EXIST("003", "vehicle.not.exist", HttpServletResponse.SC_NOT_FOUND),
-  MAINTENANCE_NOT_EXIST("004", "maintenance.not.exist", HttpServletResponse.SC_NOT_FOUND),
+  USER_NOT_EXIST("002", "user.not.exist"),
+  VEHICLE_NOT_EXIST("003", "vehicle.not.exist"),
+  MAINTENANCE_NOT_EXIST("004", "maintenance.not.exist"),
   FAILED_PERSIST_DATA("005", "failed.persist.data"),
   // FIXME: add more here
   ;
