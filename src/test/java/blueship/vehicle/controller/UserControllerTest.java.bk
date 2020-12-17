@@ -1,0 +1,109 @@
+package blueship.vehicle.controller;
+
+import blueship.vehicle.Common.TestConstants;
+import blueship.vehicle.common.Constants;
+import blueship.vehicle.common.ErrorCode;
+import blueship.vehicle.dto.UserDto;
+import blueship.vehicle.exception.VmControllerHandlerAdvice;
+import blueship.vehicle.exception.VmException;
+import blueship.vehicle.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.UriTemplate;
+
+import java.util.*;
+
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ * This class demonstrates how to test a controller using MockMVC with Standalone setup.
+ *
+ * @author truongngoquoc
+ */
+@ExtendWith(MockitoExtension.class)
+class UserControllerTest {
+    private MockMvc mockMvc;
+
+    private JacksonTester<UserDto> jsonUser;
+
+    @Mock
+    private UserService userService;
+
+    @InjectMocks
+    private UserController userController;
+
+    @BeforeEach
+    public void setup() {
+        // We would need this line if we would not use the MockitoExtension
+        // MockitoAnnotations.initMocks(this);
+        // Here we can't use @AutoConfigureJsonTesters because there isn't a Spring context
+        JacksonTester.initFields(this, new ObjectMapper());
+        // MockMvc standalone approach
+        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new VmControllerHandlerAdvice())
+                .build();
+    }
+
+    @Test
+    void getActiveUsers_EmptyList() throws Exception {
+        when(userService.getActiveUser()).thenReturn(Collections.emptyList());
+        this.mockMvc.perform(get(TestConstants.USER_V1_URL))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void getActiveUsers() throws Exception {
+        List<UserDto> userDtoList = new ArrayList<>();
+        UserDto userDto1 = new UserDto();
+        userDto1.setEmail("hero6-coder@gmail.com");
+        UserDto userDto2 = new UserDto();
+        userDto2.setEmail("andy@gmail.com");
+        userDtoList.add(userDto1);
+        userDtoList.add(userDto2);
+        when(userService.getActiveUser()).thenReturn(userDtoList);
+        this.mockMvc.perform(get(TestConstants.USER_V1_URL))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$[0].email").value("hero6-coder@gmail.com"))
+                .andExpect(jsonPath("$[0].status", is(Constants.ACTIVE)))
+                .andExpect(jsonPath("$[1].email").value("andy@gmail.com"))
+                .andExpect(jsonPath("$[1].status", is(Constants.ACTIVE)));
+    }
+
+    @Test
+    void getVehiclesByUser() throws Exception {
+        // Build path
+        UriTemplate uriTemplate = new UriTemplate(TestConstants.USER_V1_GET_VEHICLES_URL);
+        Map<String, String> uriVariables = new HashMap<String, String>();
+        uriVariables.put("userId", "5");
+        System.out.println(uriTemplate.expand(uriVariables));
+
+        when(userService.getVehiclesByUser(5)).thenThrow(new VmException(null, ErrorCode.USER_NOT_EXIST, new StringBuilder("UserId does not exist")));
+        mockMvc.perform(get(uriTemplate.expand(uriVariables).toString()))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void saveUser() {
+    }
+}
